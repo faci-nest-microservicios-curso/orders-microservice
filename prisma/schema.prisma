@@ -1,3 +1,8 @@
+// Prisma schema para orders-ms
+// Configurado para PostgreSQL.
+//
+// Nota: este archivo se crea a mano porque `prisma init` falla en Node 24
+// con Prisma 5.10.2 (bug de util.isError). El resto del CLI sí funciona.
 
 generator client {
   provider = "prisma-client-js"
@@ -8,20 +13,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Order {
+  id          Int         @id @default(autoincrement())
+  totalAmount Float
+  totalItems  Int
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("orders")
+}
+
 enum OrderStatus {
   PENDING
   DELIVERED
   CANCELED
-}
-
-model Order {
-  id String @id @default(uuid())
-  totalAmount Float
-  totalItems Int
-
-  status OrderStatus
-  paidAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
