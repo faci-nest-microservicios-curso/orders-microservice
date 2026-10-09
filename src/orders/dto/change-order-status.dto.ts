@@ -6,7 +6,7 @@ export class ChangeOrderStatusDto {
 
     @IsNumber()
     @IsPositive()
-    id: number
+    id: string
 
     @IsEnum(OrderStatusList, {
         message: `Posibble status values are: ${OrderStatusList}`

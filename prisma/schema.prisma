@@ -14,14 +14,25 @@ datasource db {
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
+  id          String      @id @default(uuid())
   totalAmount Float
   totalItems  Int
   status      OrderStatus @default(PENDING)
+  paidAt      DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  @@map("orders")
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  productId Int
+  quantity  Int
+  price     Float
+
+  order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
 }
 
 enum OrderStatus {

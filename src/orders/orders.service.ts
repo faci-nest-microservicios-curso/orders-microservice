@@ -15,9 +15,13 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
     }
 
     async create(createOrderDto: CreateOrderDto) {
-        return this.order.create({
-            data: createOrderDto,
-        });
+        return {
+            createOrderDto,
+            mensage: 'llega'
+        }
+        // return this.order.create({
+        //     data: createOrderDto,
+        // });
     }
 
     async findAll(orderPaginationDto: OrderPaginationDto) {
@@ -41,7 +45,7 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
         };
     }
 
-    async findOne(id: number) {
+    async findOne(id: string) {
         const order = await this.order.findFirst({
             where: { id },
         });
