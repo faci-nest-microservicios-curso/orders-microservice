@@ -1,11 +1,10 @@
 import { OrderStatus } from "@prisma/client"
-import { IsEnum, IsNumber, IsPositive } from "class-validator"
+import { IsEnum, IsUUID } from "class-validator"
 import { OrderStatusList } from "../enums/order.enum"
 
 export class ChangeOrderStatusDto {
 
-    @IsNumber()
-    @IsPositive()
+    @IsUUID()
     id: string
 
     @IsEnum(OrderStatusList, {

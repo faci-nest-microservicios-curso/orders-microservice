@@ -1,4 +1,4 @@
-import { Controller, ParseIntPipe } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -20,7 +20,7 @@ export class OrdersController {
   }
 
   @MessagePattern({ cmd: 'find_one_order' })
-  findOne(@Payload('id', ParseIntPipe) id: string) {
+  findOne(@Payload('id') id: string) {
     return this.ordersService.findOne(id);
   }
 

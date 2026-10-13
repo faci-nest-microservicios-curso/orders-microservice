@@ -15,8 +15,7 @@ datasource db {
 
 model Order {
   id          String      @id @default(uuid())
-  totalAmount Float
-  totalItems  Int
+  
   status      OrderStatus @default(PENDING)
   paidAt      DateTime?
   createdAt   DateTime    @default(now())
