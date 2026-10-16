@@ -10,6 +10,20 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
 
+    # El socket de Postgres vive en /var/run/postgresql. La imagen crea ese
+    # directorio como usuario "postgres" (uid 999), pero el contenedor corre
+    # como uid 1000, por lo que el `chmod 03775` del entrypoint falla con
+    # "Operation not permitted". Con este tmpfs el directorio pertenece al
+    # uid 1000 y el chmod del entrypoint se aplica sin errores. Ademas es
+    # efimero, que es lo correcto para un directorio de sockets.
+    tmpfs:
+      - /var/run/postgresql:uid=1000,gid=1000,mode=1777
+
+    # SIGINT = "fast shutdown": cierra conexiones y hace checkpoint antes de
+    # salir, evitando el "database system was not properly shut down" y la
+    # recuperacion automatica en el siguiente arranque.
+    stop_signal: SIGINT
+
     ports:
       - 5433:5432
 
